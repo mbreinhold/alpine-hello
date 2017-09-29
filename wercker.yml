@@ -28,7 +28,7 @@ build:
         disable-sync: true
         username: $QUAY_USERNAME
         password: $QUAY_PASSWORD
-        tag: $WERCKER_GIT_COMMIT
+        tag: latest
         cmd: "/opt/jdk-9/bin/java -version"
         env: "JAVA_HOME=/opt/jdk-9"
         repository: quay.io/mreinhold/alpine-hello
