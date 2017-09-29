@@ -11,3 +11,25 @@ build:
           apk update
           apk add wget
           mkdir -p $WERCKER_OUTPUT_DIR/opt
+    - script:
+        name: install JDK 9 for alpine linux
+        code: |
+          wget -q http://download.java.net/java/jdk9-alpine/archive/181/binaries/jdk-9-ea+181_linux-x64-musl_bin.tar.gz
+          tar -x -f jdk-9-ea+181_linux-x64-musl_bin.tar.gz -C $WERCKER_OUTPUT_DIR/opt
+          rm jdk-9-ea+181_linux-x64-musl_bin.tar.gz
+    - script:
+        name: move binaries to /opt
+        code: |
+          mv $WERCKER_OUTPUT_DIR/opt /opt
+    - script:
+        name: cleanup build result
+        code: rm -rf $WERCKER_ROOT
+    - internal/docker-push:
+        disable-sync: true
+        username: $QUAY_USERNAME
+        password: $QUAY_PASSWORD
+        tag: $WERCKER_GIT_COMMIT
+        cmd: "/opt/jdk-9/bin/java -version"
+        env: "JAVA_HOME=/opt/jdk-9"
+        repository: quay.io/mreinhold/alpine-hello
+        registry: https://quay.io
