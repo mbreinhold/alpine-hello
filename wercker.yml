@@ -1,0 +1,13 @@
+
+box:
+  id: alpine:3.6
+  cmd: /bin/sh
+
+build:
+  steps:
+    - script:
+        name: initialize
+        code: |
+          apk update
+          apk add wget
+          mkdir -p $WERCKER_OUTPUT_DIR/opt
